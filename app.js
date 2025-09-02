@@ -7,6 +7,8 @@ const dbo=require('./db');
 app.engine('hbs',exhbs.engine({layoutsDir:'views/',defaultLayout:"main",extname:"hbs"}))
 app.set('view engine','hbs');
 app.set('views','views');
+app.use(bodyparser.urlencoded({extended:true}))
+
 app.get('/',async (req,res)=>{
     let database = await dbo.getDatabase();
     const collection = database.collection('books');
@@ -14,7 +16,22 @@ app.get('/',async (req,res)=>{
     let employees=await cursor.toArray();
 
     let message=' ';
+    
+    switch(req.query.status)
+    {
+        case '1':
+            message='Tnsert done';
+            break;
+        default:
+            break;
+    }
     res.render('main',{message,employees})
 })
-
+app.post('/store_book',async (req,res)=>{
+    let database = await dbo.getDatabase();
+    const collection=database.collection('books');
+    let book ={title: req.body.title,author: req.body.author}
+   await  collection.insertOne(book);
+   return res.redirect('/?status=1')
+})
 app.listen(8000,()=>{console.log('Listening to 8000');})

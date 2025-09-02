@@ -8,11 +8,22 @@
 <body>
     <h1>Monngo examp</h1>
     {{message}}
-    <form action="">
+    <h3>Create</h3>
+    <form method="post" action="/store_book">
         <label for="">Title</label>
         <input type="text" name="title">
         <label for="">Author</label>
         <input type="text" name="author">
+        <input type="submit">
+    </form>
+    <br></br>
+
+    <h3>Edit</h3>
+    <form method="post" action="/update_book">
+        <label for="">Title</label>
+        <input type="text" name="title" value="{{edit_book.title}}">
+        <label for="">Author</label>
+        <input type="text" name="author" value="{{edit_book.title}}">
         <input type="submit">
     </form>
     <br></br>
